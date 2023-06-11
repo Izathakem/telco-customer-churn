@@ -1,7 +1,7 @@
 import pickle
 import streamlit as st
 import pandas as pd
-# import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 
 model_file = 'model_C=1.0.bin'
@@ -15,14 +15,8 @@ def main():
         "Would you like to predict or see the data visualization",
         ("Prediction", "VizData"))
     st.sidebar.info('Click here to see more detail about customer churn')
-    st.title("Telco Customer Churn Prediction")
-
-
-st.markdown("Model to predict Telco customer churn")
-
-st.header("Customer Details")
-
-   if add_selectbox == 'Prediction':
+    st.title("Predicting Customer Churn")
+    if add_selectbox == 'Prediction':
         gender = st.selectbox('Gender:', ['male', 'female'])
         seniorcitizen = st.selectbox(' Customer is a senior citizen:', [0, 1])
         partner = st.selectbox(' Customer has a partner:', ['yes', 'no'])
