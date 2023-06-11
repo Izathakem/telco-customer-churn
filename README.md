@@ -1,2 +1,2 @@
 # dsproject-telcochurn
-telco-customer-churn
+DS-PROJECT-TECLOCHURN
