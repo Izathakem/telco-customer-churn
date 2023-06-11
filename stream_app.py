@@ -1,7 +1,8 @@
 import pickle
 import streamlit as st
 import pandas as pd
-from matplotlib import pyplot as plt
+# import matplotlib.pyplot as plt
+
 
 model_file = 'model_C=1.0.bin'
 
@@ -15,50 +16,62 @@ def main():
         ("Prediction", "VizData"))
     st.sidebar.info('Click here to see more detail about customer churn')
     st.title("Predicting Customer Churn")
-    
     if add_selectbox == 'Prediction':
         gender = st.selectbox('Gender:', ['male', 'female'])
-        senior_citizen = st.selectbox('Customer is a senior citizen:', [0, 1])
-        partner = st.selectbox('Customer has a partner:', ['yes', 'no'])
-        dependents = st.selectbox('Customer has dependents:', ['yes', 'no'])
-        phone_service = st.selectbox('Customer has phone service:', ['yes', 'no'])
-        multiple_lines = st.selectbox('Customer has multiple lines:', ['yes', 'no', 'no_phone_service'])
-        internet_service = st.selectbox('Customer has internet service:', ['dsl', 'no', 'fiber_optic'])
-        online_security = st.selectbox('Customer has online security:', ['yes', 'no', 'no_internet_service'])
-        online_backup = st.selectbox('Customer has online backup:', ['yes', 'no', 'no_internet_service'])
-        device_protection = st.selectbox('Customer has device protection:', ['yes', 'no', 'no_internet_service'])
-        tech_support = st.selectbox('Customer has tech support:', ['yes', 'no', 'no_internet_service'])
-        streaming_tv = st.selectbox('Customer has streaming TV:', ['yes', 'no', 'no_internet_service'])
-        streaming_movies = st.selectbox('Customer has streaming movies:', ['yes', 'no', 'no_internet_service'])
-        contract = st.selectbox('Customer has a contract:', ['month-to-month', 'one_year', 'two_year'])
-        paperless_billing = st.selectbox('Customer has paperless billing:', ['yes', 'no'])
-        payment_method = st.selectbox('Payment Option:', ['bank_transfer_(automatic)', 'credit_card_(automatic)', 'electronic_check', 'mailed_check'])
-        tenure = st.number_input('Number of months the customer has been with the current telco provider:', min_value=0, max_value=240, value=0)
-        monthly_charges = st.number_input('Monthly charges:', min_value=0, max_value=240, value=0)
-        total_charges = tenure * monthly_charges
+        seniorcitizen = st.selectbox(' Customer is a senior citizen:', [0, 1])
+        partner = st.selectbox(' Customer has a partner:', ['yes', 'no'])
+        dependents = st.selectbox(' Customer has  dependents:', ['yes', 'no'])
+        phoneservice = st.selectbox(
+            ' Customer has phoneservice:', ['yes', 'no'])
+        multiplelines = st.selectbox(' Customer has multiplelines:', [
+                                     'yes', 'no', 'no_phone_service'])
+        internetservice = st.selectbox(' Customer has internetservice:', [
+                                       'dsl', 'no', 'fiber_optic'])
+        onlinesecurity = st.selectbox(' Customer has onlinesecurity:', [
+                                      'yes', 'no', 'no_internet_service'])
+        onlinebackup = st.selectbox(' Customer has onlinebackup:', [
+                                    'yes', 'no', 'no_internet_service'])
+        deviceprotection = st.selectbox(' Customer has deviceprotection:', [
+                                        'yes', 'no', 'no_internet_service'])
+        techsupport = st.selectbox(' Customer has techsupport:', [
+                                   'yes', 'no', 'no_internet_service'])
+        streamingtv = st.selectbox(' Customer has streamingtv:', [
+                                   'yes', 'no', 'no_internet_service'])
+        streamingmovies = st.selectbox(' Customer has streamingmovies:', [
+                                       'yes', 'no', 'no_internet_service'])
+        contract = st.selectbox(' Customer has a contract:', [
+                                'month-to-month', 'one_year', 'two_year'])
+        paperlessbilling = st.selectbox(
+            ' Customer has a paperlessbilling:', ['yes', 'no'])
+        paymentmethod = st.selectbox('Payment Option:', [
+                                     'bank_transfer_(automatic)', 'credit_card_(automatic)', 'electronic_check', 'mailed_check'])
+        tenure = st.number_input(
+            'Number of months the customer has been with the current telco provider :', min_value=0, max_value=240, value=0)
+        monthlycharges = st.number_input(
+            'Monthly charges :', min_value=0, max_value=240, value=0)
+        totalcharges = tenure*monthlycharges
         output = ""
         output_prob = ""
-        
         input_dict = {
             "gender": gender,
-            "seniorcitizen": senior_citizen,
+            "seniorcitizen": seniorcitizen,
             "partner": partner,
             "dependents": dependents,
-            "phoneservice": phone_service,
-            "multiplelines": multiple_lines,
-            "internetservice": internet_service,
-            "onlinesecurity": online_security,
-            "onlinebackup": online_backup,
-            "deviceprotection": device_protection,
-            "techsupport": tech_support,
-            "streamingtv": streaming_tv,
-            "streamingmovies": streaming_movies,
+            "phoneservice": phoneservice,
+            "multiplelines": multiplelines,
+            "internetservice": internetservice,
+            "onlinesecurity": onlinesecurity,
+            "onlinebackup": onlinebackup,
+            "deviceprotection": deviceprotection,
+            "techsupport": techsupport,
+            "streamingtv": streamingtv,
+            "streamingmovies": streamingmovies,
             "contract": contract,
-            "paperlessbilling": paperless_billing,
-            "paymentmethod": payment_method,
+            "paperlessbilling": paperlessbilling,
+            "paymentmethod": paymentmethod,
             "tenure": tenure,
-            "monthlycharges": monthly_charges,
-            "totalcharges": total_charges
+            "monthlycharges": monthlycharges,
+            "totalcharges": totalcharges
         }
 
         if st.button("Prediction"):
@@ -67,17 +80,19 @@ def main():
             churn = y_pred >= 0.5
             output_prob = float(y_pred)
             output = bool(churn)
-        
         st.success('Churn: {0}, Risk Score: {1}'.format(output, output_prob))
 
     if add_selectbox == 'VizData':
+
         df = pd.read_csv('WA_Fn-UseC_-Telco-Customer-Churn.csv')
-        services = ['PhoneService', 'InternetService', 'TechSupport', 'StreamingTV']
+        services = ['PhoneService', 'InternetService',
+                    'TechSupport', 'StreamingTV']
         selected_service = st.selectbox("Churn reason:", services)
 
         def churn_rate(service):
             fig = plt.figure(figsize=(10, 6))
-            svc_types = df.groupby(service)['Churn'].value_counts(normalize=True).unstack()
+            svc_types = df.groupby(service)['Churn'].value_counts(
+                normalize=True).unstack()
             svc_types.plot(kind='bar', stacked=True, ax=plt.gca())
             plt.title(service)
             plt.tight_layout()
